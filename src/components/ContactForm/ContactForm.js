@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactForm.module.scss';
 
-function ContactForm() {
+function ContactForm({ onSubmitForm }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -11,20 +11,22 @@ function ContactForm() {
   const numberId = uuidv4();
 
   const handleChange = event => {
+    // console.log(event);
+    console.log(event.currentTarget.value);
     const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+    return { [name]: value };
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    this.props.onSubmitForm(this.state);
+    onSubmitForm(name, number);
 
-    this.reset();
+    reset();
   };
 
   const reset = () => {
-    this.setState({ name: '', number: '' });
+    return { name: '', number: '' };
   };
 
   return (

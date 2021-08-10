@@ -15,6 +15,10 @@ function App() {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
+  //   useEffect(() => {
+  //   window.localStorage.setItem(key, JSON.stringify(state));
+  // }, [key, state]);
+
   const formSubmitHandler = text => {
     const contactsId = uuidv4();
     const add = { id: contactsId, name: text.name, number: text.number };
