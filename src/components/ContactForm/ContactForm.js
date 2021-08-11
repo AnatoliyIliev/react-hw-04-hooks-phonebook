@@ -12,6 +12,8 @@ function ContactForm({ onSubmit }) {
   const numberId = uuidv4();
 
   const handleChange = event => {
+    // console.log(event);
+    console.log(event.currentTarget.value);
     const { name, value } = event.currentTarget;
     switch (name) {
       case 'name':
