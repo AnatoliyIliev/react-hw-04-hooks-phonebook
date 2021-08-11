@@ -1,9 +1,10 @@
+// import { getDefaultNormalizer } from '@testing-library/react';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ContactForm.module.scss';
 
-function ContactForm() {
+function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -12,19 +13,29 @@ function ContactForm() {
 
   const handleChange = event => {
     const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+    switch (name) {
+      case 'name':
+        setName(value);
+        // setName(prevState => [...prevState, value]);
+        break;
+      case 'number':
+        setNumber(value);
+        // setNumber(prevState => [...prevState, value]);
+        break;
+      default:
+        return;
+    }
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-
-    this.props.onSubmitForm(this.state);
-
-    this.reset();
+    onSubmit(name, number);
+    reset();
   };
 
   const reset = () => {
-    this.setState({ name: '', number: '' });
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -63,7 +74,7 @@ function ContactForm() {
 }
 
 ContactForm.propTypes = {
-  onSubmitForm: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

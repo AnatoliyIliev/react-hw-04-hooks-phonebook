@@ -9,18 +9,22 @@ function App() {
   const [contacts, setContacts] = useState(
     () => JSON.parse(window.localStorage.getItem('contacts')) ?? [],
   );
-  const [filter] = useState('');
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const formSubmitHandler = text => {
+  const formSubmitHandler = (name, number) => {
     const contactsId = uuidv4();
-    const add = { id: contactsId, name: text.name, number: text.number };
+    const add = {
+      id: contactsId,
+      name: name,
+      number: number,
+    };
 
     const filterName = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(text.name.toLowerCase()),
+      contact.name.toLowerCase().includes(name.toLowerCase()),
     );
 
     if (filterName.length > 0) {
@@ -28,13 +32,11 @@ function App() {
       return;
     }
 
-    this.setState(({ contacts }) => ({
-      contacts: [add, ...contacts],
-    }));
+    setContacts(prevState => [add, ...prevState]);
   };
 
   const changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
+    setFilter(e.currentTarget.value);
   };
 
   const getVisibleContacts = () => {
@@ -45,15 +47,15 @@ function App() {
   };
 
   const deleteContacts = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+    setContacts(prevState =>
+      prevState.filter(contact => contact.id !== contactId),
+    );
   };
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <ContactForm onSubmitForm={formSubmitHandler} />
+      <ContactForm onSubmit={formSubmitHandler} />
       <h2>Contacts</h2>
       <Filter value={filter} onChange={changeFilter} />
       <ContactList
